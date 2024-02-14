@@ -31,9 +31,7 @@ const ArticleTextBlock = styled.div`
     }
 `
 
-const ArticleTextTitle = styled.p`
-    margin:0px;
-
+const ArticleTextTitle = styled.div`
     div {
         margin:0px;
         font-size:24px;
