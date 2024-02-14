@@ -47,12 +47,14 @@ const ArcticleDate = styled.div`
 `
 
 const ArticleTitle = styled.div`
-    color: rgb(15, 23, 42);
-    font-size: 40px;
-    letter-spacing: -1px;
-    line-height: 44px;
-    font-weight: 700;
-    margin: 12px 0px 0px;
+    div {
+        color: rgb(15, 23, 42);
+        font-size: 40px;
+        letter-spacing: -1px;
+        line-height: 44px;
+        font-weight: 700;
+        margin: 12px 0px 0px;
+    }
 `
 
 const ArticleDescription = styled.div`
@@ -131,6 +133,15 @@ const DescriptionIntro = styled.div`
     line-height: 28px;
 `
 
+const BackendText = styled.div`
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px; 
+    }
+`
+
 export const ArticleRead = () => {
     const params = useLocation();
     const { loading, error, data, refetch } = useQuery(GET_ARTICLE_ITEM, { variables: { id: params.state.postId } });
@@ -179,7 +190,7 @@ export const ArticleRead = () => {
                 </ArticleHeader>
 
                 <ArticleTitle>
-                    {post.content.title.long}
+                    <div dangerouslySetInnerHTML={{__html:post.content.title.long}}/>
                 </ArticleTitle>
 
                 <ArticleDescription>
@@ -193,7 +204,9 @@ export const ArticleRead = () => {
                         {post.content.description.thumbnail}
                     </ArticleImageDescription>
 
-                    <div dangerouslySetInnerHTML={{__html: post.content.description.long}}/>
+                    <BackendText>
+                        <div dangerouslySetInnerHTML={{__html: post.content.description.long}}/>
+                    </BackendText>
 
                 </ArticleDescription>
 

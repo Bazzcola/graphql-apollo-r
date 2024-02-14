@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { NewsItem } from '../NewsItem/NewsItem';
 import { useQuery } from '@apollo/client';
@@ -73,7 +73,8 @@ export const NewsList = () => {
   const { loading, error, data, fetchMore } = useQuery(GET_ARTICLE_LIST);
   const [newsList, setNewsList] = useState<NewsListInterface[]>([]);
   const [hasMore, setHasMore] = useState(true);
-  const [showButton, setShowButton] = useState<number>(0);
+  const [showButton, setShowButton] = useState<boolean>(false);
+  const prevScrollY = useRef<number>(0);
 
   useEffect(() => {
     if (!data) {
@@ -85,14 +86,18 @@ export const NewsList = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setShowButton(window.scrollY);
+      const scrollY = window.scrollY;
+
+      if (Math.abs(scrollY - prevScrollY.current) > 100) {
+        setShowButton(scrollY > 100);
+
+        prevScrollY.current = scrollY;
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleScrollPage = async() => {
@@ -149,7 +154,7 @@ export const NewsList = () => {
 
           <ScrollTopBox>
             <ScrollTop>
-              <ScrollTopButton $show={showButton > 100 ? 'flex' : 'none'} onClick={() => onScrollUp()}>
+              <ScrollTopButton $show={showButton ? 'flex' : 'none'} onClick={() => onScrollUp()}>
                 <IconArrowUp src={arrowUp} alt='arrow' />
               </ScrollTopButton>
             </ScrollTop>

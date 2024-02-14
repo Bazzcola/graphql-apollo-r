@@ -33,15 +33,19 @@ const ArticleTextBlock = styled.div`
 
 const ArticleTextTitle = styled.p`
     margin:0px;
-    font-size:24px;
-    line-height:26px;
-    font-weight: 500;
-    color:#0f172a;
-    cursor:pointer;
-    margin-bottom:10px;
 
-    &:hover {
-        color:red;
+    div {
+        margin:0px;
+        font-size:24px;
+        line-height:26px;
+        font-weight: 500;
+        color:#0f172a;
+        cursor:pointer;
+        margin-bottom:10px;
+    
+        &:hover {
+            color:red;
+        }
     }
 `
 
@@ -57,6 +61,10 @@ const ArticleTextDescription = styled.div`
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+
+    @media(max-width:850px) {
+        display:none;
+    }
 `
 
 const ArticleLogoDate = styled.div`
@@ -140,7 +148,7 @@ export const NewsItem:React.FC<NewsItemInterface> = ({ data }) => {
                 <ArticleTextBlock>
                     <LinkNavigation onClick={() => toArticleReadPage(data.id)}>
                         <ArticleTextTitle>
-                            {data.title.short}
+                            <div dangerouslySetInnerHTML={{__html: data.title.short}}/>
                         </ArticleTextTitle>
                     </LinkNavigation>
 
